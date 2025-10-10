@@ -262,3 +262,22 @@ function getRandomLastSeen() {
   ];
   return options[Math.floor(Math.random() * options.length)];
 }
+
+
+// Obtener solo el correo por ID
+export const readUser = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.params.id, {
+      attributes: ['id', 'name', 'email', 'telefono'],
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error('Error al obtener correo del usuario:', error);
+    res.status(500).json({ error: 'Error al obtener el correo del usuario' });
+  }
+};

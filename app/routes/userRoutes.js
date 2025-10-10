@@ -13,7 +13,8 @@ import {
   deleteUser,
   deleteUserWithEntidades,
   cambiarFoto,
-  getUsersWithLocations
+  getUsersWithLocations,
+  readUser
 } from '../controllers/userController.js';
 
 const router = express.Router();
@@ -38,5 +39,11 @@ router.put('/:id', authorization.soloAdmin, updateUser);
 router.delete('/:id', authorization.soloAdmin, deleteUser);
 router.delete('/:id/with-entidades', authorization.soloAdmin, deleteUserWithEntidades);
 router.put('/cambiarFoto/:id', cambiarFoto);
+
+
+// Ruta para obtener perfil de usuario
+router.get('/perfil/:id', readUser);
+
+
 
 export default router;

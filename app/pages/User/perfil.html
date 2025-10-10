@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SINAPTICO</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link rel="stylesheet" href="styles/colores.css">
+    <link rel="stylesheet" href="styles/perfil.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+
+<body>
+
+    <!-- Encabezado -->
+    <header class="header">
+        <div onclick="window.location.href='/helice'" class="logo">
+            <!-- <span class="logo-icon">⚡</span> -->
+            <span class="logo-text">SINAPTICO</span>
+        </div>
+        <nav class="nav">
+            <button class="nav-button pulse" onclick="window.location.href='/helice'">Hélice</button>
+            <button class="nav-button pulse" onclick="window.location.href='/proyectos'">Proyectos</button>
+            <button class="nav-button pulse" onclick="window.location.href='/innovacion'">Innovación</button>
+
+            <button class="nav-button pulse" onclick="window.location.href='/Conocimiento'">Conocimiento</button>
+            <button class="nav-button pulse" onclick="window.location.href='/convocatorias'">Convocatorias</button>
+
+            <button class="nav-button pulse" onclick="window.location.href='/eventos'">Eventos</button>
+
+            <button class="nav-button pulse" onclick="irEnConstruccion()">Mapa</button>
+
+            <div style="position:fixed;top:70px;right:20px;z-index:1000;font-size:1.5em;cursor:pointer;">
+                <span id="icono-notif"><i class="bi bi-bell-fill"></i> <span
+                        style='background:red;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;'>0</span></span>
+            </div>
+            <div class="notificaciones" id="notificaciones"></div>
+
+            <!-- Botón con menú desplegable -->
+            <div class="dropdown">
+                <button class=" " id="userMenuBtn">
+                    <div id="userPhoto ">
+                        <img class="imagenPerfil" src="img/sinfoto.jpg" alt="Foto de perfil"
+                            onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+                    </div>
+
+                </button>
+
+                <div class="dropdown-menu" id="userMenu">
+                    <a href="/perfil.html">Perfil</a>
+                    <a href="/configuracion">Configuración</a>
+                    <a href="/logout" id="cerrarSesion">Cerrar sesión</a>
+                </div>
+            </div>
+
+        </nav>
+    </header>
+
+
+
+    <div class="main-content">
+
+        <div class="section">
+
+            <!-- Columna izquierda: tabla -->
+            <div class="input-box">
+
+
+                <h2 class="tittle">Datos Generales</h2>
+
+                <div id="table-perfil"></div>
+                <br>
+
+            </div>
+
+            <!-- Columna derecha: PDF -->
+            <div class="input-box">
+                <iframe src="SebastianCV.pdf" width="100%" height="600px"></iframe>
+
+            </div>
+
+        </div>
+
+        <!--Modal Actualizar Perfil-->
+
+        <div id="modalPerfil" class="modal">
+            <div class="modal-content" style="max-width:900px;">
+                <span class="close" id="cerrarModalPerfil">&times;</span>
+                <h2>Mi Perfil</h2>
+                <div class="form-section">
+
+                    <!--Actualizar Datos Generales-->
+                    <h3 class="section-title">Datos Generales</h3>
+
+                    <div class=" input-row">
+                        <div class="input-box">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" id="nombre" name="nombre" placeholder="Ingrese su nombre" required>
+                        </div>
+                        <div class="input-box">
+                            <label for="apellidos">Apellidos</label>
+                            <input type="text" id="apellidos" name="apellidos" placeholder="Ingrese sus apellidos"
+                                required>
+                        </div>
+
+                    </div>
+                    <div class=" input-row">
+
+                        <div class="input-box">
+                            <label for="cargo">Cargo</label>
+                            <input type="text" id="cargo" name="cargo" placeholder="Ingrese su cargo" required>
+                        </div>
+
+                        <div class="input-box">
+                            <label for="genero">Género</label>
+                            <select name="genero" id="genero" required>
+                                <option>Selecciona una opcion</option>
+                                <option value="masculino">Masculino</option>
+                                <option value="femenino">Femenino</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-box">
+                            <label for="correo">Correo Electrónico</label>
+                            <input type="email" id="correo" name="correo" placeholder="Ingrese el correo" required>
+                        </div>
+
+                        <div class="input-box">
+                            <label for="telefono">Teléfono / Celular</label>
+                            <input type="text" id="telefono" name="telefono" placeholder="Ingrese el teléfono o celular"
+                                required>
+                        </div>
+
+                    </div>
+                    <div class="input-row">
+                        <div class="input-box">
+                            <label for="departamento">Departamento</label>
+                            <select name="departamento" id="departamento" required>
+
+                            </select>
+                        </div>
+
+                        <div class="input-box">
+                            <label for="ciudad">Ciudad</label>
+                            <select name="ciudad" id="ciudad" required>
+
+                            </select>
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <!--Actualizar Foto de Perfil-->
+                <div class="form-section">
+                    <h3 class="section-title">Foto de Perfil</h3>
+
+                    <div class="input-row">
+
+                        <div class="logo-preview-container"
+                            style="text-align: center; padding: 15px; border: 2px dashed #ddd; border-radius: 8px; background-color: #f9f9f9;">
+                            <img id="currentLogo" src="/logos/agrofuturo_logo.png" alt="Logo actual"
+                                style="max-width: 150px; max-height: 100px; object-fit: contain; border-radius: 4px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px; display: none;"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <div id="noLogoText" style="display: block; color: rgb(102, 102, 102); font-style: italic;">
+                                Sin foto actualmente</div>
+                        </div>
+                        <div class="input-box">
+                            <span>Nueva Foto de Perfil (Opcional)</span>
+                            <div class="logo-upload-container">
+                                <input type="file" id="logo" name="logo" accept="image/png, image/jpeg, image/jpg"
+                                    style="margin-bottom: 10px;">
+
+                                <div id="logoPreview"
+                                    style="display: none; text-align: center; padding: 10px; border: 2px solid #007bff; border-radius: 8px; background-color: #f8f9fa;">
+                                    <img id="previewImage" src="" alt="Vista previa"
+                                        style="max-width: 120px; max-height: 80px; object-fit: contain; border-radius: 4px;">
+                                    <p style="margin: 5px 0 0 0; font-size: 12px; color: #666;">Vista previa del perfil
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Actualizar CV-->
+                <div class="form-section">
+                    <h3 class="section-title">Curriculum Vitae</h3>
+
+                    <div class="input-row">
+
+                        <div class="input-box">
+                            <label for="CV" type="file">Curriculum Vitae CV</label>
+                            <input type="file" id="CV" name="CV" required>
+                        </div>
+
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="modal-button-secondary" id="cancelarActualizarPerfil"> Cancelar
+                        </button>
+                        <button type="submit" class="modal-button" id="actualizarPerfil"> Guardar Cambios</button>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <script>
+            const userMenuBtn = document.getElementById("userMenuBtn");
+            const dropdown = userMenuBtn.closest(".dropdown");
+
+            // Mostrar / ocultar el menú al hacer clic
+            userMenuBtn.addEventListener("click", (event) => {
+                event.stopPropagation(); // evita que el clic cierre inmediatamente el menú
+                dropdown.classList.toggle("show");
+            });
+
+            // Cerrar el menú si haces clic fuera
+            document.addEventListener("click", () => {
+                dropdown.classList.remove("show");
+            });
+        </script>
+
+        <script>
+
+            function obtenerCookie(nombre) {
+                const nombreCookie = `${nombre}=`;
+                const cookies = document.cookie.split(';');
+
+                for (let i = 0; i < cookies.length; i++) {
+                    let cookie = cookies[i].trim();
+
+                    if (cookie.indexOf(nombreCookie) === 0) {
+                        return cookie.substring(nombreCookie.length, cookie.length);
+                    }
+                }
+
+                return null; // Retorna null si no se encuentra la cookie
+            }
+            const userId = obtenerCookie("userId");
+
+
+            fetch(`/api/user/perfil/${userId}`)
+                .then(res => {
+                    if (!res.ok) throw new Error('Usuario no encontrado');
+                    return res.json();
+                })
+                .then(user => {
+                    const contenedor = document.getElementById('table-perfil');
+                    contenedor.innerHTML = `
+                <table class="perfil">
+                    <tr>
+                        <td>
+                            <div id="userPhoto">
+                                <img id="imagenPerfil" src="${user.foto || 'img/sinfoto.jpg'}" alt="Foto de perfil"
+                                    onerror="this.onerror=null;this.src='img/sinfoto.jpg';">
+                            </div>
+                        </td>
+                        <td>
+                            <h2>${user.name}</h2>
+                            <div>
+                                <button class="nav-button" id="perfil">
+                                    <span><i class="bi bi-pencil-square"></i> Perfil </span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Teléfono:</strong></td>
+                        <td>${user.telefono || 'No disponible'}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Correo Electrónico:</strong></td>
+                        <td>${user.email || 'No disponible'}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Vinculado a:</strong></td>
+                        <td>${user.name}</td>
+                    </tr>
+                </table>
+            `;
+                    // Abrir formulario actualizar de perfil al hacer clic en el botón
+                    document.getElementById('perfil').onclick = function () {
+                        document.getElementById('modalPerfil').style.display = 'block';
+                    };
+
+                    document.getElementById('cerrarModalPerfil').onclick = function () {
+                        document.getElementById('modalPerfil').style.display = 'none';
+                    };
+                })
+
+
+
+        </script>
+
+        <!-- Scripts -->
+
+        <script src="js/notificaciones.js"></script>
+        <script src="/js/websocket.js"></script>
+
+</body>
+
+</html>
